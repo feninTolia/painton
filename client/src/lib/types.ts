@@ -3,11 +3,14 @@ export interface IWSMsg {
   username: string;
   method: 'connection' | 'draw';
   figure: {
-    type: 'brush' | 'rect' | 'finish';
+    type: 'brush' | 'rect' | 'circle' | 'line' | 'finish';
     x: number;
     y: number;
+    currentX: number;
+    currentY: number;
     width: number;
     height: number;
     color: string;
+    lineWidth: number;
   };
 }

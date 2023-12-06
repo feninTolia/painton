@@ -5,6 +5,8 @@ export default class Circle extends Tool {
   isMouseDown = false;
   startX: number | null = null;
   startY: number | null = null;
+  width: number | null = null;
+  height: number | null = null;
   saved: string = '';
 
   constructor(
@@ -28,7 +30,23 @@ export default class Circle extends Tool {
 
   mouseUpHandler() {
     this.isMouseDown = false;
+    if (!this.socket) return;
+    this.socket.send(
+      JSON.stringify({
+        method: 'draw',
+        id: this.id,
+        figure: {
+          type: 'circle',
+          x: this.startX,
+          y: this.startY,
+          width: this.width,
+          height: this.height,
+          color: this.ctx?.fillStyle,
+        },
+      })
+    );
   }
+
   mouseDownHandler(e: MouseEvent<HTMLCanvasElement>) {
     if (!this.canvas) return;
 
@@ -42,10 +60,10 @@ export default class Circle extends Tool {
     if (this.isMouseDown && this.startX && this.startY) {
       const currentX = e.pageX - e.currentTarget.offsetLeft;
       const currentY = e.pageY - e.currentTarget.offsetTop;
-      const width = currentX - this.startX;
-      const height = currentY - this.startY;
+      this.width = currentX - this.startX;
+      this.height = currentY - this.startY;
 
-      this.draw(this.startX, this.startY, width, height);
+      this.draw(this.startX, this.startY, this.width, this.height);
     }
   }
 
@@ -66,5 +84,24 @@ export default class Circle extends Tool {
       this.ctx.fill();
       this.ctx.stroke();
     };
+  }
+
+  static staticDraw(
+    ctx: CanvasRenderingContext2D | null | undefined,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    color: string
+  ) {
+    if (!ctx) return;
+    const radius = Math.abs(h) / 2 + Math.abs(w) / 2;
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.stroke();
   }
 }

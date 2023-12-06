@@ -5,6 +5,8 @@ export default class Line extends Tool {
   isMouseDown = false;
   startX: number | null = null;
   startY: number | null = null;
+  currentX: number | null = null;
+  currentY: number | null = null;
   saved: string = '';
 
   constructor(
@@ -28,6 +30,22 @@ export default class Line extends Tool {
 
   mouseUpHandler() {
     this.isMouseDown = false;
+    if (!this.socket) return;
+    this.socket.send(
+      JSON.stringify({
+        method: 'draw',
+        id: this.id,
+        figure: {
+          type: 'line',
+          x: this.startX,
+          y: this.startY,
+          currentX: this.currentX,
+          currentY: this.currentY,
+          color: this.ctx?.fillStyle,
+          lineWidth: this.ctx?.lineWidth,
+        },
+      })
+    );
   }
   mouseDownHandler(e: MouseEvent<HTMLCanvasElement>) {
     if (!this.canvas) return;
@@ -38,17 +56,15 @@ export default class Line extends Tool {
   }
   mouseMoveHandler(e: MouseEvent<HTMLCanvasElement>) {
     if (this.isMouseDown && this.startX && this.startY) {
-      const currentX = e.pageX - e.currentTarget.offsetLeft;
-      const currentY = e.pageY - e.currentTarget.offsetTop;
+      this.currentX = e.pageX - e.currentTarget.offsetLeft;
+      this.currentY = e.pageY - e.currentTarget.offsetTop;
 
-      this.draw(this.startX, this.startY, currentX, currentY);
+      this.draw(this.startX, this.startY, this.currentX, this.currentY);
     }
   }
 
   draw(x: number, y: number, cx: number, cy: number) {
     if (!this.ctx) return;
-    console.log();
-
     const img = new Image();
     img.src = this.saved;
     img.onload = () => {
@@ -60,5 +76,23 @@ export default class Line extends Tool {
       this.ctx.lineTo(cx, cy);
       this.ctx.stroke();
     };
+  }
+
+  static staticDraw(
+    ctx: CanvasRenderingContext2D | null | undefined,
+    x: number,
+    y: number,
+    cx: number,
+    cy: number,
+    color: string,
+    lineWidth: number
+  ) {
+    if (!ctx) return;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(cx, cy);
+    ctx.stroke();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
   }
 }

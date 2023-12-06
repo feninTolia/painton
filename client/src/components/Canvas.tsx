@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom';
 import { IWSMsg } from '../lib/types';
 import Rect from '../tools/Rect';
 import axios from 'axios';
+import Circle from '../tools/Circle';
+import Line from '../tools/Line';
 
 const Canvas = observer(() => {
   const [isShowModal, setIsShowModal] = useState(true);
@@ -81,7 +83,13 @@ const Canvas = observer(() => {
 
     switch (figure.type) {
       case 'brush':
-        Brush.staticDraw(ctx, figure.x, figure.y);
+        Brush.staticDraw(
+          ctx,
+          figure.x,
+          figure.y,
+          figure.color,
+          figure.lineWidth
+        );
         break;
       case 'rect':
         Rect.staticDraw(
@@ -93,6 +101,27 @@ const Canvas = observer(() => {
           figure.color
         );
         break;
+      case 'circle':
+        Circle.staticDraw(
+          ctx,
+          figure.x,
+          figure.y,
+          figure.width,
+          figure.height,
+          figure.color
+        );
+        break;
+      case 'line':
+        Line.staticDraw(
+          ctx,
+          figure.x,
+          figure.y,
+          figure.currentX,
+          figure.currentY,
+          figure.color,
+          figure.lineWidth
+        );
+        break;
       case 'finish':
         ctx?.beginPath();
         break;
@@ -102,15 +131,18 @@ const Canvas = observer(() => {
     }
   };
 
-  const mouseUpHandler = () => {
+  const mouseDownHandler = () => {
     if (!canvasRef.current) return;
     canvasState.pushToUndo(canvasRef.current.toDataURL());
+  };
 
+  const mouseUpHandler = () => {
+    if (!canvasRef.current) return;
     axios
       .post(`http://localhost:8000/image?id=${params.id}`, {
         img: canvasRef.current.toDataURL(),
       })
-      .then((res) => console.log(res));
+      .catch();
   };
 
   const connectionHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -122,7 +154,8 @@ const Canvas = observer(() => {
   return (
     <div className="canvas">
       <canvas
-        onMouseDown={mouseUpHandler}
+        onMouseDown={mouseDownHandler}
+        onMouseUp={mouseUpHandler}
         ref={canvasRef}
         width={600}
         height={400}

@@ -15,5 +15,6 @@ export default class Eraser extends Brush {
     this.ctx.lineTo(x, y);
     this.ctx.stroke();
     this.ctx.strokeStyle = '#1c1c1c';
+    this.ctx.fillStyle = '#1c1c1c';
   }
 }

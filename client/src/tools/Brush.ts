@@ -29,7 +29,9 @@ export default class Brush extends Tool {
         e.pageY - e.currentTarget.offsetTop
       );
 
-      this.socket?.send(
+      if (!this.socket) return;
+
+      this.socket.send(
         JSON.stringify({
           method: 'draw',
           id: this.id,
@@ -37,6 +39,8 @@ export default class Brush extends Tool {
             type: 'brush',
             x: e.pageX - e.currentTarget.offsetLeft,
             y: e.pageY - e.currentTarget.offsetTop,
+            color: this.ctx?.fillStyle,
+            lineWidth: this.ctx?.lineWidth,
           },
         })
       );
@@ -44,7 +48,9 @@ export default class Brush extends Tool {
   }
   mouseUpHandler() {
     this.isMouseDown = false;
-    this.socket?.send(
+    if (!this.socket) return;
+
+    this.socket.send(
       JSON.stringify({
         method: 'draw',
         id: this.id,
@@ -72,9 +78,15 @@ export default class Brush extends Tool {
   static staticDraw(
     ctx: CanvasRenderingContext2D | null | undefined,
     x: number,
-    y: number
+    y: number,
+    color: string,
+    lineWidth: number
   ) {
-    ctx?.lineTo(x, y);
-    ctx?.stroke();
+    if (!ctx) return;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = lineWidth;
   }
 }
