@@ -1,0 +1,69 @@
+.toolbar {
+  position: fixed;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: var(--toolbar-height);
+  width: 100%;
+  padding-inline: 20px;
+
+  background-color: rgb(70, 62, 47);
+  box-shadow: 0 4px 5px #1d1c1c;
+
+  & .flex-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+}
+
+.setting {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.toolbar__btn {
+  width: 25px;
+  height: 25px;
+  padding: 5px;
+
+  &.brush {
+    background: url('../assets/image/brush.svg') no-repeat center center;
+    background-size: contain;
+  }
+  &.rect {
+    background: url('../assets/image/rect.svg') no-repeat center center;
+    background-size: contain;
+  }
+  &.circle {
+    background: url('../assets/image/circle.svg') no-repeat center center;
+    background-size: contain;
+  }
+  &.eraser {
+    background: url('../assets/image/eraser.svg') no-repeat center center;
+    background-size: contain;
+  }
+  &.line {
+    background: url('../assets/image/line.svg') no-repeat center center;
+    background-size: contain;
+  }
+  &.color-picker {
+    background: url('../assets/image/colorPicker.jpg') no-repeat center center;
+    background-size: contain;
+  }
+  &.undo {
+    background: url('../assets/image/undo.svg') no-repeat center center;
+    background-size: contain;
+  }
+  &.redo {
+    background: url('../assets/image/redo.svg') no-repeat center center;
+    background-size: contain;
+  }
+  &.save {
+    background: url('../assets/image/save.svg') no-repeat center center;
+    background-size: contain;
+  }
+}
