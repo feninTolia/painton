@@ -34,6 +34,7 @@ const Canvas = observer(() => {
         );
       };
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const Canvas = observer(() => {
         }
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [canvasState.username]);
 
   const drawHandler = (msg: IWSMsg) => {
