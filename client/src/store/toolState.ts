@@ -1,8 +1,10 @@
 import { makeAutoObservable } from 'mobx';
 import Brush from '../tools/Brush';
 import Rect from '../tools/Rect';
+import Circle from '../tools/Circle';
+import Line from '../tools/Line';
 
-type ToolType = Brush | Rect | null;
+type ToolType = Brush | Rect | Circle | Line | null;
 
 class ToolState {
   tool: ToolType = null;

@@ -56,15 +56,39 @@ const Toolbar = () => {
         />
         <button
           className="toolbar__btn circle"
-          onClick={() => toolState.setTool(new Circle(canvasState.canvas))}
+          onClick={() =>
+            toolState.setTool(
+              new Circle(
+                canvasState.canvas,
+                canvasState.socket,
+                canvasState.sessionId
+              )
+            )
+          }
         />
         <button
           className="toolbar__btn eraser"
-          onClick={() => toolState.setTool(new Eraser(canvasState.canvas))}
+          onClick={() =>
+            toolState.setTool(
+              new Eraser(
+                canvasState.canvas,
+                canvasState.socket,
+                canvasState.sessionId
+              )
+            )
+          }
         />
         <button
           className="toolbar__btn line"
-          onClick={() => toolState.setTool(new Line(canvasState.canvas))}
+          onClick={() =>
+            toolState.setTool(
+              new Line(
+                canvasState.canvas,
+                canvasState.socket,
+                canvasState.sessionId
+              )
+            )
+          }
         />
         <input type="color" onChange={changeColor} />
       </div>

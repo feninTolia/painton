@@ -7,8 +7,12 @@ export default class Line extends Tool {
   startY: number | null = null;
   saved: string = '';
 
-  constructor(canvas: HTMLCanvasElement | null) {
-    super(canvas);
+  constructor(
+    canvas: HTMLCanvasElement | null,
+    socket: WebSocket | null,
+    id: string
+  ) {
+    super(canvas, socket, id);
     this.listen();
   }
 

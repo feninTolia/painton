@@ -1,8 +1,12 @@
 import Brush from './Brush';
 
 export default class Eraser extends Brush {
-  constructor(canvas: HTMLCanvasElement | null) {
-    super(canvas);
+  constructor(
+    canvas: HTMLCanvasElement | null,
+    socket: WebSocket | null,
+    id: string
+  ) {
+    super(canvas, socket, id);
   }
 
   draw(x: number, y: number) {
